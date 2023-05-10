@@ -1,46 +1,59 @@
-import random
+def jogar():
+    #Cabeçario aplicativo
+    print("*********************************")
+    print("***Bem vindo ao jogo da Forca!***")
+    print("*********************************")
 
-print("*********************************")
-print("Bem vindo ao jogo de Adivinhação!")
-print("*********************************")
+    #Variáveis Globais
+    tentativas = 0
+    palavraSecreta = "banana"
+    palavraAtual = ["_" for letra in palavraSecreta]
+    perdeuJogo = False
+    ganhouJogo = False
 
-numero_secreto = random.randrange(1,101)
-print("(1 - Fácil) (2 - Médio) (3 - Díficil) (4 - Extremo)")
-dificuldade = int(input("Selecione o nível do jogo: "))
-pontos = 1000
+    
+    def atualizaPalavraAtual(chute):            #Função de validação da palavra criada pelos chutes do jogador com a palavra secreta
+        nonlocal palavraAtual                   #Declaração variável global fora do escopo da função
+        nonlocal ganhouJogo
+        nonlocal tentativas
 
-if dificuldade == 1:
-    total_tentativas = 10
-elif dificuldade == 2:
-    total_tentativas = 5
-elif dificuldade == 3:
-    total_tentativas = 3
-elif dificuldade == 4:
-    total_tentativas = 1
+        if (chute in palavraSecreta):  
+            for i in range(len(palavraSecreta)):    #Varre todos os caracteres da palavra secreta
+                letra = palavraSecreta[i]           #Variável indicando a letra atual no loop de validação.
+            
+                if (chute == letra):                #Se o chute do jogador existir na palavra secreta guarda essa informação na palavra atual.
+                    palavraAtual[i] = chute         #Implementa palavra atual com as letras que o jogador já acertou.
+                if(chute == palavraSecreta):        #Se o chute for igual a palavra secreta o jogo acaba
+                    palavraAtual = chute
+                    ganhouJogo = True
+        else:
+            tentativas += 1
 
-for rodada in range(1, total_tentativas + 1):
-    print("Tentativa {} de {}".format(rodada, total_tentativas))
-    chute_str = input("Digite um número de 1 à 100: ")
-    print("Você digitou ", chute_str)
-    chute = int(chute_str)
 
-    if (chute < 1 or chute > 100):
-        print("Você deve digitar um número entre 1 e 100.")
-        continue
 
-    acertou = chute == numero_secreto
-    maior = chute > numero_secreto
-    menor = chute < numero_secreto
-    pontos_perdidos = abs(numero_secreto - chute)
+    def imprimePalavra():                       #Função que imprime a palavra atual no console
+        print(palavraAtual)                     #Tratamento para a palavra atual sempre começar com a letra maiúscula.
 
-    if (acertou):
-        print("Parabéns você acertou e fez {} pontos!".format(pontos))
-        print("Fim do Jogo!")
-        break
-    elif(maior):
-        print("Você errou, seu chute foi maior que o número sorteado.")
-        pontos = pontos - pontos_perdidos
+    print(palavraAtual)
 
+    while not perdeuJogo and not ganhouJogo:    #Laço que verifica se o jogo continua ou termina.
+
+        chute = input("Qual letra? ").lower()   #Campo de interação onde o jogador digita uma letra para chutar a resposta, campo tratado para sempre ser minúsculo.
+        chute = chute.strip()
+        atualizaPalavraAtual(chute)             #Chamada da função que valida a palavra atual.
+        imprimePalavra()                        #Chamada da função que imprime a palavra atual.
+        
+        if (palavraAtual == palavraSecreta):    #Verifica se o jogador acertou a palavra secreta.
+            ganhouJogo = True
+
+        perdeuJogo = tentativas == 6
+        ganhouJogo = "_" not in palavraAtual
+   
+    if (ganhouJogo):
+        print("Você ganhou!")
     else:
-        print("Você errou seu número é menor do que o número sorteado.")
-        pontos = pontos - pontos_perdidos
+        print("Você perdeu, deu FORCA!!!")                    #Ao sair do laço indica que o jogo acabou.
+    input()                                     #Apertar qualquer tecla para sair.
+
+if __name__ == "__main__":
+    jogar()
