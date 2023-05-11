@@ -1,25 +1,13 @@
+import random
+
 def jogar():
-    #Cabeçario aplicativo
-    print("*********************************")
-    print("***Bem vindo ao jogo da Forca!***")
-    print("*********************************")
 
-
-    arquivo = open("palavras.txt", "r")
-    palavras = []
-
-    for i in arquivo:
-        i = i.strip()
-        palavras.append[i]
-
-    arquivo.close()
-
-    print(palavras)
-
+    imprimeCabecario()
+    palavraSecreta = carregaPalavraSecreta() 
+    palavraAtual = carregaPalavraAtual(palavraSecreta)
+    
     #Variáveis Globais
     tentativas = 0
-    palavraSecreta = "banana".upper()
-    palavraAtual = ["_" for letra in palavraSecreta]
     perdeuJogo = False
     ganhouJogo = False
 
@@ -40,8 +28,6 @@ def jogar():
                     ganhouJogo = True
         else:
             tentativas += 1
-
-
 
     def imprimePalavra():                       #Função que imprime a palavra atual no console
         print(palavraAtual)                    
@@ -66,6 +52,26 @@ def jogar():
     else:
         print("Você perdeu, deu FORCA!!!")      #Ao sair do laço indica que o jogo acabou.
     input()                                     #Apertar qualquer tecla para sair.
+
+
+def imprimeCabecario():
+    print("*********************************")
+    print("***Bem vindo ao jogo da Forca!***")
+    print("*********************************")
+
+def carregaPalavraSecreta():
+    palavras = []
+   
+    with open("palavras.txt") as arquivo: #Abre o arquivo palavras.txt e joga o conteudo do arquivo na variável "arquivo", chamada da função OPEN pelo WITH.
+        for linha in arquivo:
+            linha = linha.strip()
+            palavras.append(linha)
+    indice = random.randrange(0, len(palavras))
+    palavraSecreta = palavras[indice].upper()
+    return palavraSecreta
+
+def carregaPalavraAtual(palavraSecreta):
+    return ["_" for letra in palavraSecreta]
 
 if __name__ == "__main__":
     jogar()
