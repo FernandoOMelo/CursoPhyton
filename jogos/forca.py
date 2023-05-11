@@ -4,9 +4,21 @@ def jogar():
     print("***Bem vindo ao jogo da Forca!***")
     print("*********************************")
 
+
+    arquivo = open("palavras.txt", "r")
+    palavras = []
+
+    for linha in arquivo:
+        linha = linha.strip()
+        palavras.append[linha]
+
+    arquivo.close()
+
+    print(palavras)
+
     #Variáveis Globais
     tentativas = 0
-    palavraSecreta = "banana"
+    palavraSecreta = "banana".upper()
     palavraAtual = ["_" for letra in palavraSecreta]
     perdeuJogo = False
     ganhouJogo = False
@@ -18,12 +30,12 @@ def jogar():
         nonlocal tentativas
 
         if (chute in palavraSecreta):  
-            for i in range(len(palavraSecreta)):    #Varre todos os caracteres da palavra secreta
-                letra = palavraSecreta[i]           #Variável indicando a letra atual no loop de validação.
+            for i in range(len(palavraSecreta)):#Varre todos os caracteres da palavra secreta
+                letra = palavraSecreta[i]       #Variável indicando a letra atual no loop de validação.
             
-                if (chute == letra):                #Se o chute do jogador existir na palavra secreta guarda essa informação na palavra atual.
-                    palavraAtual[i] = chute         #Implementa palavra atual com as letras que o jogador já acertou.
-                if(chute == palavraSecreta):        #Se o chute for igual a palavra secreta o jogo acaba
+                if (chute == letra):            #Se o chute do jogador existir na palavra secreta guarda essa informação na palavra atual.
+                    palavraAtual[i] = chute     #Implementa palavra atual com as letras que o jogador já acertou.
+                if(chute == palavraSecreta):    #Se o chute for igual a palavra secreta o jogo acaba
                     palavraAtual = chute
                     ganhouJogo = True
         else:
@@ -32,13 +44,13 @@ def jogar():
 
 
     def imprimePalavra():                       #Função que imprime a palavra atual no console
-        print(palavraAtual)                     #Tratamento para a palavra atual sempre começar com a letra maiúscula.
+        print(palavraAtual)                    
 
     print(palavraAtual)
 
     while not perdeuJogo and not ganhouJogo:    #Laço que verifica se o jogo continua ou termina.
 
-        chute = input("Qual letra? ").lower()   #Campo de interação onde o jogador digita uma letra para chutar a resposta, campo tratado para sempre ser minúsculo.
+        chute = input("Qual letra? ").upper()   #Campo de interação onde o jogador digita uma letra para chutar a resposta, campo tratado para sempre ser maiúsculo.
         chute = chute.strip()
         atualizaPalavraAtual(chute)             #Chamada da função que valida a palavra atual.
         imprimePalavra()                        #Chamada da função que imprime a palavra atual.
@@ -52,7 +64,7 @@ def jogar():
     if (ganhouJogo):
         print("Você ganhou!")
     else:
-        print("Você perdeu, deu FORCA!!!")                    #Ao sair do laço indica que o jogo acabou.
+        print("Você perdeu, deu FORCA!!!")      #Ao sair do laço indica que o jogo acabou.
     input()                                     #Apertar qualquer tecla para sair.
 
 if __name__ == "__main__":
