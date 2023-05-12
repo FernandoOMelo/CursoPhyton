@@ -59,6 +59,8 @@ def atualizaPalavraAtual(palavraSecreta, chute, palavraAtual):  #Função de val
         tentativas += 1
         desenhaForca(tentativas)
     
+    return palavraAtual
+    
 def verificaFimDeJogo(palavraAtual, palavraSecreta):            #Função que monitora se o jogo já acabou.
     global ganhouJogo
     if (palavraAtual == palavraSecreta):    #Verifica se o jogador acertou a palavra secreta.
