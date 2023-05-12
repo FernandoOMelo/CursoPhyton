@@ -1,11 +1,12 @@
-import random
+import random #Importa biblioteca Random necessária para gerar um número aleatório                                               
 
-perdeuJogo = False
+#Declaração de variáveis globais
+perdeuJogo = False                                          
 ganhouJogo = False
 tentativas = 0
 
-def jogar():
-
+def jogar():                                                    #Função principal que é executada enquando o jogo roda.
+    #Importação de variáveis globais
     global perdeuJogo
     global ganhouJogo
     global tentativas
@@ -15,18 +16,19 @@ def jogar():
     palavraAtual = carregaPalavraAtual(palavraSecreta)
     print(palavraAtual)
 
-    while not perdeuJogo and not ganhouJogo:    #Laço que verifica se o jogo continua ou termina.
+    while not perdeuJogo and not ganhouJogo: #Laço que verifica se o jogo continua ou termina.
+        verificaFimDeJogo(palavraSecreta, palavraAtual)
         loopJogador(palavraSecreta, palavraAtual)
 
     fimDeJogo(ganhouJogo, palavraSecreta)
-    input()
+    input() #Aperte qualquer tecla para continuar
 
-def imprimeCabecario():
+def imprimeCabecario():                                         #Função que imprime as primeiras linhas do jogo.
     print("*********************************")
     print("***Bem vindo ao jogo da Forca!***")
     print("*********************************")
 
-def carregaPalavraSecreta():
+def carregaPalavraSecreta():                                    #Função que importa a palavra secreta do arquivo de texto.
     palavras = []
    
     with open("palavras.txt") as arquivo: #Abre o arquivo palavras.txt e joga o conteudo do arquivo na variável "arquivo", chamada da função OPEN pelo WITH.
@@ -37,10 +39,10 @@ def carregaPalavraSecreta():
     palavraSecreta = palavras[indice].upper()
     return palavraSecreta
 
-def carregaPalavraAtual(palavraSecreta):
+def carregaPalavraAtual(palavraSecreta):                        #Função que inicia a palavra atual com o mesmo números de caracteres da palavra secreta.
     return ["_" for letra in palavraSecreta]
 
-def atualizaPalavraAtual(palavraSecreta, chute, palavraAtual):#Função de validação da palavra criada pelos chutes do jogador com a palavra secreta
+def atualizaPalavraAtual(palavraSecreta, chute, palavraAtual):  #Função de validação da palavra criada pelos chutes do jogador com a palavra secreta
     global ganhouJogo
     global tentativas
 
@@ -51,45 +53,38 @@ def atualizaPalavraAtual(palavraSecreta, chute, palavraAtual):#Função de valid
             if (chute == letra):            #Se o chute do jogador existir na palavra secreta guarda essa informação na palavra atual.
                 palavraAtual[i] = chute     #Implementa palavra atual com as letras que o jogador já acertou.
             if(chute == palavraSecreta):    #Se o chute for igual a palavra secreta o jogo acaba
-                palavraAtual = chute
-                ganhouJogo = True
-                break
+                palavraAtual[i] = letra 
+
     else:
         tentativas += 1
         desenhaForca(tentativas)
     
-    verificaFimDeJogo(palavraAtual, palavraSecreta, chute) 
-    return palavraAtual
-
-def verificaFimDeJogo(palavraAtual, palavraSecreta, chute):
+def verificaFimDeJogo(palavraAtual, palavraSecreta):            #Função que monitora se o jogo já acabou.
     global ganhouJogo
     if (palavraAtual == palavraSecreta):    #Verifica se o jogador acertou a palavra secreta.
         ganhouJogo = True
-    if (chute == palavraSecreta):
-        ganhouJogo = True
 
-def imprimePalavra(palavraAtual):                       #Função que imprime a palavra atual no console
+def imprimePalavra(palavraAtual):                               #Função que imprime a palavra atual no console
     print(palavraAtual)   
 
-def fimDeJogo(ganhouJogo, palavraSecreta):
+def fimDeJogo(ganhouJogo, palavraSecreta):                      #Função que imprime resultado da partida.
     if (ganhouJogo):
         imprimeVenceu()
     else:
         print(palavraSecreta)
         imprimePerdeu(palavraSecreta)
 
-def loopJogador(palavraSecreta, palavraAtual):
+def loopJogador(palavraSecreta, palavraAtual):                  #Função do loop de interação com o jogador.
         global perdeuJogo
         global ganhouJogo
         
         chute = input("Qual letra? ").upper()   #Campo de interação onde o jogador digita uma letra para chutar a resposta, campo tratado para sempre ser maiúsculo.
         chute = chute.strip()
         imprimePalavra(atualizaPalavraAtual(palavraSecreta, chute, palavraAtual))
-        if not ganhouJogo or not perdeuJogo:
-            perdeuJogo = tentativas == 7
-            ganhouJogo = "_" not in palavraAtual
+        perdeuJogo = tentativas == 7
+        ganhouJogo = "_" not in palavraAtual
 
-def imprimePerdeu(palavraSecreta):
+def imprimePerdeu(palavraSecreta):                              #Função que imprime a mensagem do perdedor.
     print("Puxa, você foi enforcado!")
     print("A palavra era {}".format(palavraSecreta))
     print("    _______________         ")
@@ -109,7 +104,7 @@ def imprimePerdeu(palavraSecreta):
     print("     \_         _/          ")
     print("       \_______/            ")    
 
-def imprimeVenceu():
+def imprimeVenceu():                                            #Função que imprime a palavra do vencedor.
     print("Parabéns, você ganhou!")
     print("       ___________      ")
     print("      '._==_==_=_.'     ")
@@ -122,7 +117,7 @@ def imprimeVenceu():
     print("         _.' '._        ")
     print("        '-------'       ")
 
-def desenhaForca(tentativas):
+def desenhaForca(tentativas):                                   #Função que desenha a forca a cada erro.
     print("  _______     ")
     print(" |/      |    ")
 
